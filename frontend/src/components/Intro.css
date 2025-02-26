@@ -1,0 +1,26 @@
+.intro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75vh;
+  background: url("/coffee-background.png") no-repeat center center/cover;
+  position: relative;
+}
+
+.logo-box {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 30vh;
+}
+
+.logo {
+  max-width: 400px;
+  min-width: 200px;
+  width: 75vw;
+  height: auto;
+}

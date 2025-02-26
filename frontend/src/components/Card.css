@@ -1,0 +1,30 @@
+.card-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+}
+
+.card-image {
+  width: 50%;
+  border-radius: 10px;
+}
+
+.card-button {
+  background-color: #7d0d0d;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.card-button:hover {
+  background-color: #a00;
+}
