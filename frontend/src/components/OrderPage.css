@@ -1,0 +1,89 @@
+.order-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.order-page-container h2 {
+  font-size: 2.5rem;
+  color: #7d0d0d;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.menu-table {
+  width: 100%;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.menu-table th,
+.menu-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.menu-table th {
+  background-color: #7d0d0d;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.menu-table td {
+  background-color: white;
+}
+
+.menu-table select {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.order-button {
+  background-color: #7d0d0d;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.order-button:hover {
+  background-color: #a00;
+}
+
+.message {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #7d0d0d;
+}

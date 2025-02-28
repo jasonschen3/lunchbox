@@ -16,9 +16,9 @@ const db = new pg.Client({
 
 db.connect();
 
-router.get("/getMenu", async (req, res) => {
+router.get("/items", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM menu WHERE available = TRUE");
+    const result = await db.query("SELECT * FROM items WHERE available = TRUE");
     console.log(result.rows);
     res.json(result.rows);
   } catch (err) {

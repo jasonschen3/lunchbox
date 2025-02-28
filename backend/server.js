@@ -42,9 +42,20 @@ app.post("/addItem", async (req, res) => {});
 
 app.post("/removeItem", async (req, res) => {});
 
-app.post("/submitOrder", async (req, res) => {});
+app.post("/submitOrder", async (req, res) => {
+  const { customerName, email, items, totalPrice, date, time } = req.body;
 
-app.post("");
+  try {
+    const result = await db.query(
+      "INSERT INTO orders (customer_name, email, items, total_price, date, time_expected) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [customerName, email, JSON.stringify(items), totalPrice, date, time]
+    );
+    res.status(200).json(result.rows[0]);
+  } catch (err) {
+    console.error("Error submitting order:", err);
+    res.status(500).send("Internal server error");
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

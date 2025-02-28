@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header.css";
 import { useLanguage } from "../Language.tsx";
+import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const { language, setLanguage } = useLanguage();
@@ -15,15 +16,18 @@ const Header: React.FC = () => {
     <header className="header">
       <h1 className="logo">Lunchbox</h1>
       <nav className="nav-menu">
-        <a href="#" className="nav-link active">
+        <Link to="/" className="nav-link active">
           {language === "en" ? "HOME" : "ACCUEIL"}
-        </a>
-        <a href="#" className="nav-link">
+        </Link>
+        <Link to="/menu" className="nav-link">
           {language === "en" ? "MENU" : "MENU"}
-        </a>
-        <a href="#" className="nav-link">
-          {language === "en" ? "LOCATIONS" : "EMPLACEMENTS"}
-        </a>
+        </Link>
+        <Link to="/order" className="nav-link">
+          {language === "en" ? "ORDER" : "COMMANDER"}
+        </Link>
+        <Link to="/login" className="nav-link">
+          {language === "en" ? "LOGIN" : "CONNEXION"}
+        </Link>
         <select
           value={language}
           onChange={handleLanguageChange}
