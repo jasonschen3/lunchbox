@@ -1,5 +1,4 @@
 import React from "react";
-import "./Home.css";
 import Card from "./Card";
 import Header from "./Header";
 import Intro from "./Intro";
@@ -28,7 +27,7 @@ const Home: React.FC = () => {
         buttonText="View Menu"
         imageOnLeft={true}
       />
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };

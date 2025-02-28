@@ -5,11 +5,7 @@ const Intro: React.FC = () => {
   return (
     <div className="intro-container">
       <div className="logo-box">
-        <img
-          src="/main-body-logo.png"
-          alt="The French Press Logo"
-          className="logo"
-        />
+        <img src="/main-body-logo.png" alt="Logo" className="logo" />
       </div>
     </div>
   );
