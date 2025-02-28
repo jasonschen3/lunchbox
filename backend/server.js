@@ -3,7 +3,10 @@ import bodyParser from "body-parser";
 import pg from "pg";
 import env from "dotenv";
 import cors from "cors";
+
+// Routes
 import authRouter from "./routes/auth.js";
+import menuRouter from "./routes/menu.js";
 
 // Payment
 import Stripe from "stripe";
@@ -33,12 +36,7 @@ const db = new pg.Client({
 db.connect();
 
 app.use("/auth", authRouter);
-
-app.get("/menu", async (req, res) => {
-  const query = "SELECT * FROM menu";
-  const result = await db.query(query);
-  console.log(result.rows);
-});
+app.use("/menu", menuRouter);
 
 app.post("/addItem", async (req, res) => {});
 

@@ -49,8 +49,8 @@ function verifyToken(req, res, next) {
 
 function checkPermission() {
   return (req, res, next) => {
-    const userPermissionLevel = req.user.isAdmin;
-    if (userPermissionLevel) {
+    const isAdmin = req.user.is_admin;
+    if (isAdmin) {
       next();
     } else {
       res
@@ -81,8 +81,9 @@ router.post("/login", async (req, res) => {
       const user = result.rows[0];
       const storedHashedPassword = user.password;
 
-      const valid = await comparePassword(password, storedHashedPassword);
-      // const valid = password == storedHashedPassword;
+      // const valid = await comparePassword(password, storedHashedPassword);
+      // Testing purposes
+      const valid = password == storedHashedPassword;
 
       if (valid) {
         const token = generateToken(user);
