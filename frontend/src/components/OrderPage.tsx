@@ -4,6 +4,8 @@ import { BACKEND_IP, OPENING_TIME, CLOSING_TIME } from "../constants";
 import { useLanguage } from "../Language.tsx";
 import "./OrderPage.css";
 
+import Header from "./Header.tsx";
+
 interface MenuItem {
   items_id: number;
   name: string;
@@ -51,7 +53,7 @@ const OrderPage: React.FC = () => {
   const calculateTotalPrice = () => {
     let total = 0;
     menuItems.forEach((item) => {
-      const quantity = quantities[item.items_id] || 0;
+      const quantity = quantities[item.item_id] || 0;
       total += item.price * quantity;
     });
     setTotalPrice(total);
@@ -110,11 +112,11 @@ const OrderPage: React.FC = () => {
     }
 
     const items = menuItems
-      .filter((item) => quantities[item.items_id] > 0)
+      .filter((item) => quantities[item.item_id] > 0)
       .map((item) => ({
         items_id: item.items_id,
         name: item.name,
-        quantity: quantities[item.items_id],
+        quantity: quantities[item.item_id],
         price: item.price,
       }));
     console.log(selectedTime, "I");
@@ -153,110 +155,113 @@ const OrderPage: React.FC = () => {
   };
 
   return (
-    <div className="order-page-container">
-      <h2>
-        {language === "en" ? "Place Your Order" : "Passez votre commande"}
-      </h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="customerName">
-            {language === "en" ? "Name" : "Nom"}
-          </label>
-          <input
-            type="text"
-            id="customerName"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="time">
-            {language === "en" ? "Select Time" : "Sélectionnez l'heure"}
-          </label>
-          <select
-            id="time"
-            value={selectedTime}
-            onChange={(e) => setSelectedTime(e.target.value)}
-            required
-          >
-            <option value="">
-              {language === "en" ? "Select a time" : "Sélectionnez une heure"}
-            </option>
-            {generateTimeOptions().map((time) => (
-              <option key={time} value={time}>
-                {time}
+    <>
+      <Header />
+      <div className="order-page-container">
+        <h2>
+          {language === "en" ? "Place Your Order" : "Passez votre commande"}
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="customerName">
+              {language === "en" ? "Name" : "Nom"}
+            </label>
+            <input
+              type="text"
+              id="customerName"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="time">
+              {language === "en" ? "Select Time" : "Sélectionnez l'heure"}
+            </label>
+            <select
+              id="time"
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              required
+            >
+              <option value="">
+                {language === "en" ? "Select a time" : "Sélectionnez une heure"}
               </option>
-            ))}
-          </select>
-        </div>
-        <table className="menu-table">
-          <thead>
-            <tr>
-              <th>{language === "en" ? "Item" : "Article"}</th>
-              <th>{language === "en" ? "Description" : "Description"}</th>
-              <th>{language === "en" ? "Price" : "Prix"}</th>
-              <th>{language === "en" ? "Quantity" : "Quantité"}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {menuItems.map((item) => (
-              <tr key={item.items_id}>
-                <td>{item.name}</td>
-                <td>
-                  {language === "en"
-                    ? item.description
-                    : item.french_description}
-                </td>
-                <td>${item.price}</td>
-                <td>
-                  <select
-                    value={quantities[item.items_id] || 0}
-                    onChange={(e) =>
-                      handleQuantityChange(
-                        item.items_id,
-                        parseInt(e.target.value)
-                      )
-                    }
-                  >
-                    {[...Array(6).keys()].map((num) => (
-                      <option key={num} value={num}>
-                        {num}
-                      </option>
-                    ))}
-                  </select>
-                </td>
+              {generateTimeOptions().map((time) => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
+            </select>
+          </div>
+          <table className="menu-table">
+            <thead>
+              <tr>
+                <th>{language === "en" ? "Item" : "Article"}</th>
+                <th>{language === "en" ? "Description" : "Description"}</th>
+                <th>{language === "en" ? "Price" : "Prix"}</th>
+                <th>{language === "en" ? "Quantity" : "Quantité"}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="form-group">
-          <label htmlFor="totalPrice">
-            {language === "en" ? "Total Price" : "Prix total"}
-          </label>
-          <input
-            type="number"
-            id="totalPrice"
-            value={totalPrice.toFixed(2)}
-            readOnly
-          />
-        </div>
-        <button type="submit" className="order-button">
-          {language === "en" ? "Place Order" : "Passer la commande"}
-        </button>
-      </form>
-      {message && <p className="message">{message}</p>}
-    </div>
+            </thead>
+            <tbody>
+              {menuItems.map((item) => (
+                <tr key={item.item_id}>
+                  <td>{item.name}</td>
+                  <td>
+                    {language === "en"
+                      ? item.description
+                      : item.french_description}
+                  </td>
+                  <td>${item.price}</td>
+                  <td>
+                    <select
+                      value={quantities[item.item_id] || 0}
+                      onChange={(e) =>
+                        handleQuantityChange(
+                          item.item_id,
+                          parseInt(e.target.value)
+                        )
+                      }
+                    >
+                      {[...Array(6).keys()].map((num) => (
+                        <option key={num} value={num}>
+                          {num}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="form-group">
+            <label htmlFor="totalPrice">
+              {language === "en" ? "Total Price" : "Prix total"}
+            </label>
+            <input
+              type="number"
+              id="totalPrice"
+              value={totalPrice.toFixed(2)}
+              readOnly
+            />
+          </div>
+          <button type="submit" className="order-button">
+            {language === "en" ? "Place Order" : "Passer la commande"}
+          </button>
+        </form>
+        {message && <p className="message">{message}</p>}
+      </div>
+    </>
   );
 };
 
