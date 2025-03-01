@@ -43,12 +43,21 @@ app.post("/addItem", async (req, res) => {});
 app.post("/removeItem", async (req, res) => {});
 
 app.post("/submitOrder", async (req, res) => {
-  const { customerName, email, items, totalPrice, date, time } = req.body;
+  const { customerName, email, items, totalPrice, date, selectedTime } =
+    req.body;
+  console.log("Received time:", selectedTime);
 
   try {
     const result = await db.query(
       "INSERT INTO orders (customer_name, email, items, total_price, date, time_expected) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [customerName, email, JSON.stringify(items), totalPrice, date, time]
+      [
+        customerName,
+        email,
+        JSON.stringify(items),
+        totalPrice,
+        date,
+        selectedTime,
+      ]
     );
     res.status(200).json(result.rows[0]);
   } catch (err) {

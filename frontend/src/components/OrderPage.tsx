@@ -96,9 +96,10 @@ const OrderPage: React.FC = () => {
 
   const date = getCurrentDateInMetz();
 
+  // TODO
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    console.log("Selecting time", selectedTime);
     if (totalPrice <= 0) {
       setMessage(
         language === "en"
@@ -116,7 +117,7 @@ const OrderPage: React.FC = () => {
         quantity: quantities[item.items_id],
         price: item.price,
       }));
-
+    console.log(selectedTime, "I");
     axios
       .post(`${BACKEND_IP}/submitOrder`, {
         customerName,
