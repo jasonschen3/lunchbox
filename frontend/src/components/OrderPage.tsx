@@ -7,7 +7,7 @@ import "./OrderPage.css";
 import Header from "./Header.tsx";
 
 interface MenuItem {
-  items_id: number;
+  item_id: number;
   name: string;
   description: string;
   french_description: string;
@@ -98,7 +98,6 @@ const OrderPage: React.FC = () => {
 
   const date = getCurrentDateInMetz();
 
-  // TODO
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Selecting time", selectedTime);
@@ -114,7 +113,7 @@ const OrderPage: React.FC = () => {
     const items = menuItems
       .filter((item) => quantities[item.item_id] > 0)
       .map((item) => ({
-        items_id: item.items_id,
+        items_id: item.item_id,
         name: item.name,
         quantity: quantities[item.item_id],
         price: item.price,

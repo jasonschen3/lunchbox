@@ -26,7 +26,7 @@ function generateToken(user) {
   const payload = {
     id: user.id,
     username: user.username,
-    permission_level: user.permission_level,
+    is_admin: user.is_admin,
   };
   const options = { expiresIn: "2h" };
   return jwt.sign(payload, secretKey, options);
@@ -73,7 +73,6 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   console.log("Attempting login", username);
   try {
-    console.log("I'm trying");
     const result = await db.query("SELECT * FROM users WHERE username = $1", [
       username,
     ]);
@@ -81,9 +80,7 @@ router.post("/login", async (req, res) => {
       const user = result.rows[0];
       const storedHashedPassword = user.password;
 
-      // const valid = await comparePassword(password, storedHashedPassword);
-      // Testing purposes
-      const valid = password == storedHashedPassword;
+      const valid = await comparePassword(password, storedHashedPassword);
 
       if (valid) {
         const token = generateToken(user);
@@ -105,9 +102,7 @@ router.post(
   verifyToken,
   checkPermission(),
   async (req, res) => {
-    const { username, password, permission_level, name, title, upload_url } =
-      req.body;
-
+    const { username, password, email, phone_number, is_admin } = req.body;
     try {
       const checkResult = await db.query(
         "SELECT * FROM users WHERE username = $1",
@@ -125,8 +120,8 @@ router.post(
         }
 
         const userResult = await db.query(
-          "INSERT INTO users (username, password, permission_level, upload_url, name, title) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-          [username, hash, permission_level, upload_url, name, title]
+          "INSERT INTO users (username, password, email, phone_number, is_admin) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+          [username, hash, email, phone_number, is_admin]
         );
 
         if (userResult.rows.length > 0) {

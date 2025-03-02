@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       .then((res) => {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
-          navigate("/");
+          navigate("/owner");
         } else {
           setMessage(
             language === "en" ? "Wrong credentials" : "Identifiants incorrects"

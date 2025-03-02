@@ -1,0 +1,21 @@
+.unauthorized-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f8d7da;
+  color: #721c24;
+  text-align: center;
+  padding: 20px;
+}
+
+.unauthorized-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.unauthorized-container p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}

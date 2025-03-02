@@ -1,45 +1,49 @@
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { BACKEND_IP } from "../constants";
-import Order from "./Order";
-
-interface OrderType {
-  id: string;
-  customerName: string;
-  items: string[];
-  totalPrice: number;
-  status: string;
-}
-
-const socket = io(BACKEND_IP);
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./OwnerDashboard.css";
 
 const OwnerDashboard = () => {
-  const [orders, setOrders] = useState<OrderType[]>([]);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    // Listen for new orders
-    socket.on("orderUpdate", (newOrder) => {
-      console.log("New order received:", newOrder); // Log the new order for debugging
-      setOrders((prevOrders) => [newOrder, ...prevOrders]);
-    });
+    if (!token) {
+      navigate("/unauthorized");
+      return;
+    }
+  }, [token]);
 
-    return () => {
-      socket.off("orderUpdate");
-    };
-  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
-    <div>
-      <h2>Incoming Orders</h2>
-      {orders.map((order) => (
-        <Order
-          key={order.id}
-          customerName={order.customerName}
-          items={order.items}
-          totalPrice={order.totalPrice}
-          status={order.status}
-        />
-      ))}
+    <div className="owner-dashboard-container">
+      <h2>Owner Dashboard</h2>
+      <div className="button-container">
+        <button
+          className="dashboard-button"
+          onClick={() => navigate("/incoming-orders")}
+        >
+          Check Incoming Orders
+        </button>
+        <button
+          className="dashboard-button"
+          onClick={() => navigate("/register")}
+        >
+          Register Users
+        </button>
+        <button
+          className="dashboard-button"
+          onClick={() => navigate("/edit-menu")}
+        >
+          Edit Menu
+        </button>
+        <button className="dashboard-button" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

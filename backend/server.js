@@ -7,6 +7,7 @@ import cors from "cors";
 // Routes
 import authRouter from "./routes/auth.js";
 import menuRouter from "./routes/menu.js";
+import orderRouter from "./routes/orders.js";
 
 // Payment
 import Stripe from "stripe";
@@ -37,10 +38,7 @@ db.connect();
 
 app.use("/auth", authRouter);
 app.use("/menu", menuRouter);
-
-app.post("/addItem", async (req, res) => {});
-
-app.post("/removeItem", async (req, res) => {});
+app.use("/order", orderRouter);
 
 app.post("/submitOrder", async (req, res) => {
   const { customerName, email, items, totalPrice, date, selectedTime } =
