@@ -5,6 +5,7 @@ import OwnerDashboard from "./components/OwnerDashboard.tsx";
 import OrderPage from "./components/OrderPage.tsx";
 import Unauthorized from "./components/Unauthorized.tsx";
 import Register from "./components/Register.tsx";
+import Menu from "./components/Menu.tsx";
 
 import "./App.css";
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/owner" element={<OwnerDashboard />} />
         <Route path="/order" element={<OrderPage />} />
+        <Route path="/menu" element={<Menu />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
     </BrowserRouter>
