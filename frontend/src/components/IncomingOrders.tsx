@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_IP } from "../constants";
-import "./IncomingOrders.css";
+import "../styles/IncomingOrders.css";
 
 interface OrderType {
   order_id: string;

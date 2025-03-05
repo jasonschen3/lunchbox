@@ -3,7 +3,7 @@ import axios from "axios";
 import { BACKEND_IP, OPENING_TIME, CLOSING_TIME } from "../constants";
 import { useLanguage } from "../Language.tsx";
 import CheckoutButton from "./CheckoutButton";
-import "./OrderPage.css";
+import "../styles/OrderPage.css";
 
 import Header from "./Header.tsx";
 

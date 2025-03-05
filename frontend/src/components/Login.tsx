@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css";
+import "../styles/Login.css";
+
 import { useLanguage } from "../Language.tsx";
 import { BACKEND_IP } from "../constants.ts";
 

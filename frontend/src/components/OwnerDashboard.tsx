@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./OwnerDashboard.css";
+import "../styles/OwnerDashboard.css";
 
 const OwnerDashboard = () => {
   const navigate = useNavigate();

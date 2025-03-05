@@ -1,5 +1,5 @@
 import React from "react";
-import "./Header.css";
+import "../styles/Header.css";
 import { useLanguage } from "../Language.tsx";
 import { Link } from "react-router-dom";
 

@@ -1,7 +1,7 @@
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { BACKEND_IP, STRIPE_PUBLISHABLE_KEY } from "../constants";
-import "./CheckoutButton.css";
+import "../styles/CheckoutButton.css";
 
 interface CartItem {
   id: string;

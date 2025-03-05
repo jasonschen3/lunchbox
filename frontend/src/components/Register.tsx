@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_IP } from "../constants";
-import "./Login.css"; // Reuse the styles from Login.css
+import "../styles/Login.css"; // Reuse the styles from Login.css
 
 function Register() {
   const [username, setUsername] = useState("");

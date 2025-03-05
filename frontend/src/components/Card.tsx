@@ -1,4 +1,4 @@
-import "./Card.css";
+import "../styles/Card.css";
 import { useLanguage } from "../Language.tsx";
 
 interface CardProps {
