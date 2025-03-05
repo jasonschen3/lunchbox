@@ -83,8 +83,8 @@ app.post("/create-checkout-session", async (req, res) => {
         quantity: item.quantity,
       })),
       mode: "payment",
-      success_url: `${process.env.FRONTEND_IP}?success=true`,
-      cancel_url: `${process.env.FRONTEND_IP}?canceled=true`,
+      success_url: `${process.env.FRONTEND_IP}success`,
+      cancel_url: `${process.env.FRONTEND_IP}cancel`,
     });
 
     res.status(200).json({ id: session.id });

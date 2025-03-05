@@ -6,6 +6,8 @@ import OrderPage from "./components/OrderPage.tsx";
 import Unauthorized from "./components/Unauthorized.tsx";
 import Register from "./components/Register.tsx";
 import Menu from "./components/Menu.tsx";
+import SuccessPage from "./components/SuccessPage.tsx";
+import CancelPage from "./components/CancelPage.tsx";
 
 import "./App.css";
 
@@ -19,6 +21,8 @@ function App() {
         <Route path="/owner" element={<OwnerDashboard />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
     </BrowserRouter>

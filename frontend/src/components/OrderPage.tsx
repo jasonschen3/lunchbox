@@ -132,9 +132,7 @@ const OrderPage: React.FC = () => {
       .then((res) => {
         if (res.status === 200) {
           setMessage(
-            language === "en"
-              ? "Order placed successfully!"
-              : "Commande passée avec succès !"
+            language === "en" ? "Continuing to checkout" : "Passer à la caisse"
           );
         } else {
           setMessage(
