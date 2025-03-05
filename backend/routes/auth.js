@@ -24,10 +24,11 @@ const saltRounds = 10;
 
 function generateToken(user) {
   const payload = {
-    id: user.id,
+    id: user.user_id,
     username: user.username,
     is_admin: user.is_admin,
   };
+
   const options = { expiresIn: "2h" };
   return jwt.sign(payload, secretKey, options);
 }
@@ -81,6 +82,7 @@ router.post("/login", async (req, res) => {
       const storedHashedPassword = user.password;
 
       const valid = await comparePassword(password, storedHashedPassword);
+      // let valid = true;
 
       if (valid) {
         const token = generateToken(user);

@@ -22,7 +22,7 @@ function Register() {
     }
   }, [token]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
@@ -37,6 +37,7 @@ function Register() {
         },
         { headers: { "access-token": token } }
       );
+      console.log("hi");
       if (response.status === 201) {
         setMessage("Registration successful! Redirecting to dashboard");
         setTimeout(() => {
