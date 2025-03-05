@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BACKEND_IP, OPENING_TIME, CLOSING_TIME } from "../constants";
 import { useLanguage } from "../Language.tsx";
+import CheckoutButton from "./CheckoutButton";
 import "./OrderPage.css";
 
 import Header from "./Header.tsx";
@@ -254,9 +255,19 @@ const OrderPage: React.FC = () => {
               readOnly
             />
           </div>
-          <button type="submit" className="order-button">
+          {/* <button type="submit" className="order-button">
             {language === "en" ? "Place Order" : "Passer la commande"}
-          </button>
+          </button> */}
+          <CheckoutButton
+            items={menuItems
+              .filter((item) => quantities[item.item_id] > 0)
+              .map((item) => ({
+                name: item.name,
+                quantity: quantities[item.item_id],
+                price: item.price * 100, // Price in stripe is in cents
+              }))}
+            text={language === "en" ? "Checkout" : "Vérifier"}
+          />
         </form>
         {message && <p className="message">{message}</p>}
       </div>

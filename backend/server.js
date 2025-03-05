@@ -4,13 +4,13 @@ import pg from "pg";
 import env from "dotenv";
 import cors from "cors";
 
+// Payment (import uppercase Stripe, lowercase is defined later)
+import Stripe from "stripe";
+
 // Routes
 import authRouter from "./routes/auth.js";
 import menuRouter from "./routes/menu.js";
 import orderRouter from "./routes/orders.js";
-
-// Payment
-import stripe from "stripe";
 
 env.config();
 const app = express();
@@ -40,6 +40,8 @@ app.use("/auth", authRouter);
 app.use("/menu", menuRouter);
 app.use("/order", orderRouter);
 
+const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+
 app.post("/submitOrder", async (req, res) => {
   const { customerName, email, items, totalPrice, date, selectedTime } =
     req.body;
@@ -65,20 +67,31 @@ app.post("/submitOrder", async (req, res) => {
 });
 
 app.post("/create-checkout-session", async (req, res) => {
-  const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price: "{{PRICE_ID}}",
-        quantity: 1,
-      },
-    ],
-    mode: "payment",
-    success_url: `${process.env.FRONTEND_IP}?success=true`,
-    cancel_url: `${process.env.FRONTEND_IP}?canceled=true`,
-  });
+  const { items, success_url, cancel_url } = req.body;
 
-  res.redirect(303, session.url);
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: items.map((item) => ({
+        price_data: {
+          currency: "eur",
+          product_data: {
+            name: item.name,
+          },
+          unit_amount: item.price, // Amount in cents (e.g., 5000 for €50.00)
+        },
+        quantity: item.quantity,
+      })),
+      mode: "payment",
+      success_url: `${process.env.FRONTEND_IP}?success=true`,
+      cancel_url: `${process.env.FRONTEND_IP}?canceled=true`,
+    });
+
+    res.status(200).json({ id: session.id });
+  } catch (error) {
+    console.log("Error creating checkout session", error);
+    res.status(500).send("Internal server error");
+  }
 });
 
 app.listen(port, () => {
