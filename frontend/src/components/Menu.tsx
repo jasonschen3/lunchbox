@@ -1,12 +1,15 @@
-import React from "react";
+import Header from "./Header.tsx";
 import "../styles/Menu.css";
 
 const Menu: React.FC = () => {
   return (
-    <div className="menu-container">
-      <h1>Our Menu</h1>
-      <img src="/french-menu.jpg" alt="French Menu" className="menu-image" />
-    </div>
+    <>
+      <Header />
+      <div className="menu-container">
+        <h1>Our Menu</h1>
+        <img src="/french-menu.jpg" alt="French Menu" className="menu-image" />
+      </div>
+    </>
   );
 };
 

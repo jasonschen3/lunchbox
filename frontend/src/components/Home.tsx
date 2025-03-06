@@ -22,7 +22,7 @@ const Home: React.FC = () => {
         imageOnLeft={false}
       />
       <Card
-        imageSrc="/src/assets/donuts.jpg"
+        imageSrc="/src/assets/pastry.jpg"
         altText="Donut"
         buttonText="View Menu"
         imageOnLeft={true}

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Login.css";
+import Header from "./Header.tsx";
 
 import { useLanguage } from "../Language.tsx";
 import { BACKEND_IP } from "../constants.ts";
@@ -53,48 +54,51 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2>{language === "en" ? "Login" : "Connexion"}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">
-            {language === "en" ? "Username" : "Nom d'utilisateur"}
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">
-            {language === "en" ? "Password" : "Mot de passe"}
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="button-group">
-          <button type="submit" className="login-button">
-            {language === "en" ? "Login" : "Connexion"}
-          </button>
-          <button
-            type="button"
-            onClick={goBack}
-            className="login-button back-button"
-          >
-            {language === "en" ? "Back to Home" : "Retour à l'Accueil"}
-          </button>
-        </div>
-      </form>
-      {message && <p className="message">{message}</p>}
-    </div>
+    <>
+      <Header />
+      <div className="login-container">
+        <h2>{language === "en" ? "Login" : "Connexion"}</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">
+              {language === "en" ? "Username" : "Nom d'utilisateur"}
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">
+              {language === "en" ? "Password" : "Mot de passe"}
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="button-group">
+            <button type="submit" className="login-button">
+              {language === "en" ? "Login" : "Connexion"}
+            </button>
+            <button
+              type="button"
+              onClick={goBack}
+              className="login-button back-button"
+            >
+              {language === "en" ? "Back to Home" : "Retour à l'Accueil"}
+            </button>
+          </div>
+        </form>
+        {message && <p className="message">{message}</p>}
+      </div>
+    </>
   );
 };
 
