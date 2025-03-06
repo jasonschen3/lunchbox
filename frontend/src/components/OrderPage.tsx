@@ -28,7 +28,7 @@ const OrderPage: React.FC = () => {
 
   useEffect(() => {
     fetchMenu();
-  }, []);
+  });
 
   const fetchMenu = async () => {
     try {
@@ -51,18 +51,18 @@ const OrderPage: React.FC = () => {
     }));
   };
 
-  const calculateTotalPrice = () => {
-    let total = 0;
-    menuItems.forEach((item) => {
-      const quantity = quantities[item.item_id] || 0;
-      total += item.price * quantity;
-    });
-    setTotalPrice(total);
-  };
-
   useEffect(() => {
+    const calculateTotalPrice = () => {
+      let total = 0;
+      menuItems.forEach((item) => {
+        const quantity = quantities[item.item_id] || 0;
+        total += item.price * quantity;
+      });
+      setTotalPrice(total);
+    };
+
     calculateTotalPrice();
-  }, [quantities]);
+  }, [quantities, menuItems]);
 
   const getCurrentDateInMetz = () => {
     const options = {
