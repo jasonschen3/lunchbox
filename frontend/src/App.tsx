@@ -9,6 +9,7 @@ import Menu from "./components/Menu.tsx";
 import SuccessPage from "./components/SuccessPage.tsx";
 import CancelPage from "./components/CancelPage.tsx";
 import IncomingOrders from "./components/IncomingOrders.tsx";
+import EditMenu from "./components/EditMenu.tsx";
 
 import "./App.css";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/order" element={<OrderPage />} />
         <Route path="/incoming-orders" element={<IncomingOrders />} />
         <Route path="/menu" element={<Menu />} />
+        <Route path="/edit-menu" element={<EditMenu />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />

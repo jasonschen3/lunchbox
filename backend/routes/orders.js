@@ -29,7 +29,7 @@ router.get("/today", async (req, res) => {
     const result = await db.query("SELECT * FROM orders WHERE date = $1", [
       franceFormatDate,
     ]);
-    console.log(result.rows);
+
     res.json(result.rows);
   } catch (err) {
     console.error("Error fetching today's orders:", err);
