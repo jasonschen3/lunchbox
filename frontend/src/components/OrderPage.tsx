@@ -32,7 +32,7 @@ const OrderPage: React.FC = () => {
 
   const fetchMenu = async () => {
     try {
-      const result = await axios.get(`${BACKEND_IP}/menu/items`);
+      const result = await axios.get(`${BACKEND_IP}/menu/items/available`);
       setMenuItems(result.data);
     } catch (error) {
       console.log("Error fetching menu", error);

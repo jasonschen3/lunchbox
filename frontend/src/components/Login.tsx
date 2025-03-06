@@ -48,6 +48,10 @@ const Login: React.FC = () => {
       });
   };
 
+  const goBack = () => {
+    navigate("/");
+  };
+
   return (
     <div className="login-container">
       <h2>{language === "en" ? "Login" : "Connexion"}</h2>
@@ -76,11 +80,20 @@ const Login: React.FC = () => {
             required
           />
         </div>
-        <button type="submit" className="login-button">
-          {language === "en" ? "Login" : "Connexion"}
-        </button>
+        <div className="button-group">
+          <button type="submit" className="login-button">
+            {language === "en" ? "Login" : "Connexion"}
+          </button>
+          <button
+            type="button"
+            onClick={goBack}
+            className="login-button back-button"
+          >
+            {language === "en" ? "Back to Home" : "Retour à l'Accueil"}
+          </button>
+        </div>
       </form>
-      {message && <p className="mt-3 text-danger">{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
   );
 };

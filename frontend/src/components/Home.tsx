@@ -10,7 +10,7 @@ const Home: React.FC = () => {
       <Header />
       <Intro />
       <Card
-        imageSrc="/src/assets/sandwich.png"
+        imageSrc="/src/assets/sandwich.jpg"
         altText="Grilled Sandwich"
         buttonText="Order Online"
         imageOnLeft={true}

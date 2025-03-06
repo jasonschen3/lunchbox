@@ -44,8 +44,24 @@
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s;
+  margin-left: 10px;
 }
 
 .login-button:hover {
   background-color: #a00;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.back-button {
+  background-color: #555;
+}
+
+.back-button:hover {
+  background-color: #333;
 }
