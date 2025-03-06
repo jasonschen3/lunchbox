@@ -80,7 +80,7 @@ db.connect();
 
 app.use("/auth", authRouter);
 app.use("/menu", menuRouter);
-app.use("/order", orderRouter);
+app.use("/orders", orderRouter);
 
 const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
 

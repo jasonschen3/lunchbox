@@ -8,6 +8,7 @@ import Register from "./components/Register.tsx";
 import Menu from "./components/Menu.tsx";
 import SuccessPage from "./components/SuccessPage.tsx";
 import CancelPage from "./components/CancelPage.tsx";
+import IncomingOrders from "./components/IncomingOrders.tsx";
 
 import "./App.css";
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/owner" element={<OwnerDashboard />} />
         <Route path="/order" element={<OrderPage />} />
+        <Route path="/incoming-orders" element={<IncomingOrders />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelPage />} />

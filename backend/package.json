@@ -17,6 +17,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.3",
+    "socket.io": "^4.8.1",
     "stripe": "^17.7.0",
     "stripe-cli": "^0.1.0"
   }

@@ -1,25 +1,78 @@
 .incoming-orders-container {
   padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.incoming-orders-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
 }
 
 .orders-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .orders-table th,
 .orders-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 12px 15px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 .orders-table th {
-  background-color: #7d0d0d;
-  color: white;
+  background-color: #f8f8f8;
+  font-weight: 600;
+  color: #444;
 }
 
-.orders-table td {
-  background-color: white;
+.orders-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.orders-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Status styling */
+.orders-table td:nth-child(6) {
+  text-transform: capitalize;
+}
+
+/* Loading and error messages */
+.incoming-orders-container p {
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  color: #666;
+}
+
+.incoming-orders-container p:has(+ .error) {
+  background-color: #fff0f0;
+  color: #cc0000;
+  border-left: 3px solid #cc0000;
+}
+
+.back-button {
+  background-color: #7d0d0d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 20px;
+  transition: background-color 0.3s;
+  text-transform: capitalize;
+}
+
+.back-button:hover {
+  background-color: #a00;
 }
