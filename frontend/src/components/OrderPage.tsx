@@ -111,45 +111,9 @@ const OrderPage: React.FC = () => {
       return;
     }
 
-    const items = menuItems
-      .filter((item) => quantities[item.item_id] > 0)
-      .map((item) => ({
-        items_id: item.item_id,
-        name: item.name,
-        quantity: quantities[item.item_id],
-        price: item.price,
-      }));
-    console.log(selectedTime, "I");
-    axios
-      .post(`${BACKEND_IP}/submitOrder`, {
-        customerName,
-        email,
-        items,
-        totalPrice,
-        date,
-        selectedTime,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          setMessage(
-            language === "en" ? "Continuing to checkout" : "Passer à la caisse"
-          );
-        } else {
-          setMessage(
-            language === "en"
-              ? "Failed to place order. Please try again."
-              : "Échec de la commande. Veuillez réessayer."
-          );
-        }
-      })
-      .catch((err) => {
-        setMessage(
-          language === "en"
-            ? "An error occurred. Please try again later."
-            : "Une erreur s'est produite. Veuillez réessayer plus tard."
-        );
-        console.log(err);
-      });
+    setMessage(
+      language === "en" ? "Continuing to checkout" : "Passer à la caisse"
+    );
   };
 
   return (
@@ -253,17 +217,21 @@ const OrderPage: React.FC = () => {
               readOnly
             />
           </div>
-          {/* <button type="submit" className="order-button">
-            {language === "en" ? "Place Order" : "Passer la commande"}
-          </button> */}
           <CheckoutButton
             items={menuItems
               .filter((item) => quantities[item.item_id] > 0)
               .map((item) => ({
                 name: item.name,
                 quantity: quantities[item.item_id],
-                price: item.price * 100, // Price in stripe is in cents
+                amount: item.price * 100, // Price in stripe is in cents
               }))}
+            metadata={{
+              customerName,
+              email,
+              totalPrice,
+              date,
+              selectedTime,
+            }}
             text={language === "en" ? "Checkout" : "Vérifier"}
           />
         </form>

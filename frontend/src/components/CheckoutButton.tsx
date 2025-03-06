@@ -9,12 +9,22 @@ interface CartItem {
   price: number;
 }
 
+interface MetaData {
+  customerName: string;
+  email: string;
+  // items: string; Don't need since we're alreayd passing in items
+  totalPrice: number;
+  date: string;
+  selectedTime: string;
+}
+
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
-const CheckoutButton: React.FC<{ items: CartItem[]; text: string }> = ({
-  items,
-  text,
-}) => {
+const CheckoutButton: React.FC<{
+  items: CartItem[];
+  metadata: MetaData;
+  text: string;
+}> = ({ items, metadata, text }) => {
   const handleCheckout = async () => {
     const stripe = await stripePromise;
 
@@ -23,8 +33,9 @@ const CheckoutButton: React.FC<{ items: CartItem[]; text: string }> = ({
         `${BACKEND_IP}/create-checkout-session`,
         {
           items,
-          success_url: `${window.location.origin}/success`,
+          success_url: `${window.location.origin}success`,
           cancel_url: `${window.location.origin}/cancel`,
+          metadata,
         }
       );
 

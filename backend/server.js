@@ -20,6 +20,48 @@ app.get("/", (req, res) => {
 });
 
 app.use(cors());
+
+// Webhook to listen for Stripe checkout Events (move before the express.json)
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.error("Webhook signature verification failed.", err.message);
+      return res.status(400).send("Webhook Error");
+    }
+
+    // Submit order if completed
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+
+      // Extract metadata
+      const { customerName, email, items, totalPrice, date, selectedTime } =
+        session.metadata;
+
+      try {
+        const result = await db.query(
+          "INSERT INTO orders (customer_name, email, items, total_price, date, time_expected) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+          [customerName, email, items, totalPrice, date, selectedTime]
+        );
+        console.log("Order submitted:", result.rows[0]);
+      } catch (err) {
+        console.error("Error submitting order:", err);
+      }
+    }
+
+    res.status(200).json({ received: true });
+  }
+);
 app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,34 +82,14 @@ app.use("/auth", authRouter);
 app.use("/menu", menuRouter);
 app.use("/order", orderRouter);
 
-const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
-
-app.post("/submitOrder", async (req, res) => {
-  const { customerName, email, items, totalPrice, date, selectedTime } =
-    req.body;
-  console.log("Received time:", selectedTime);
-
-  try {
-    const result = await db.query(
-      "INSERT INTO orders (customer_name, email, items, total_price, date, time_expected) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [
-        customerName,
-        email,
-        JSON.stringify(items),
-        totalPrice,
-        date,
-        selectedTime,
-      ]
-    );
-    res.status(200).json(result.rows[0]);
-  } catch (err) {
-    console.error("Error submitting order:", err);
-    res.status(500).send("Internal server error");
-  }
-});
+const stripe = Stripe(process.env.STRIPE_PRIVATE_KEY);
 
 app.post("/create-checkout-session", async (req, res) => {
-  const { items, success_url, cancel_url } = req.body;
+  const { items } = req.body;
+  const { customerName, email, totalPrice, date, selectedTime } =
+    req.body.metadata;
+
+  // console.log(req.body);
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -75,16 +97,22 @@ app.post("/create-checkout-session", async (req, res) => {
       line_items: items.map((item) => ({
         price_data: {
           currency: "eur",
-          product_data: {
-            name: item.name,
-          },
-          unit_amount: item.price, // Amount in cents (e.g., 5000 for €50.00)
+          product_data: { name: item.name },
+          unit_amount: item.amount, // Amount in cents
         },
         quantity: item.quantity,
       })),
       mode: "payment",
-      success_url: `${process.env.FRONTEND_IP}success`,
+      success_url: `${process.env.FRONTEND_IP}success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.FRONTEND_IP}cancel`,
+      metadata: {
+        customerName,
+        email,
+        items: JSON.stringify(items), // Store order data in metadata
+        totalPrice,
+        date,
+        selectedTime,
+      },
     });
 
     res.status(200).json({ id: session.id });
