@@ -76,3 +76,67 @@
 .back-button:hover {
   background-color: #a00;
 }
+
+/* Status styles */
+.status {
+  padding: 6px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-preparing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+/* Row colorization based on status */
+tr.status-pending {
+  background-color: rgba(255, 243, 205, 0.2) !important;
+}
+
+tr.status-preparing {
+  background-color: rgba(204, 229, 255, 0.2) !important;
+}
+
+tr.status-completed {
+  background-color: rgba(212, 237, 218, 0.2) !important;
+}
+
+/* Status update button */
+.status-button {
+  background-color: #7d0d0d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.status-button:hover {
+  background-color: #a00;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 4px solid #f5c6cb;
+}

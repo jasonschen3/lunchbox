@@ -5,7 +5,7 @@ import Header from "./Header.tsx";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../Language.tsx";
 
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 interface OrderType {
   order_id: string;
@@ -37,6 +37,43 @@ const IncomingOrders: React.FC = () => {
 
   const goBack = () => {
     navigate(-1);
+  };
+
+  // Handle status update
+  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+    try {
+      await axios.patch(`${BACKEND_IP}/orders/${orderId}/status`, {
+        status: newStatus,
+      });
+
+      // Refresh the data after updating
+      mutate(`${BACKEND_IP}/orders/today`);
+    } catch (err) {
+      console.error("Error updating order status:", err);
+    }
+  };
+
+  // Get the next status based on current status
+  const getNextStatus = (currentStatus: string): string => {
+    switch (currentStatus) {
+      case "pending":
+        return "preparing";
+      case "preparing":
+        return "completed";
+      default:
+        return currentStatus;
+    }
+  };
+
+  // Get button text based on current status
+  const getButtonText = (currentStatus: string): string => {
+    if (language === "en") {
+      return currentStatus === "pending" ? "Start Preparing" : "Mark Completed";
+    } else {
+      return currentStatus === "pending"
+        ? "Commencer Préparation"
+        : "Marquer Terminé";
+    }
   };
 
   // Translate status for display
@@ -79,6 +116,20 @@ const IncomingOrders: React.FC = () => {
     return timeString;
   };
 
+  // Get CSS class for status
+  const getStatusClass = (status: string): string => {
+    switch (status) {
+      case "pending":
+        return "status-pending";
+      case "preparing":
+        return "status-preparing";
+      case "completed":
+        return "status-completed";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
       <Header />
@@ -94,7 +145,7 @@ const IncomingOrders: React.FC = () => {
         )}
 
         {error && (
-          <p>
+          <p className="error-message">
             {language === "en"
               ? `Error loading orders: ${error.message}`
               : `Erreur lors du chargement des commandes: ${error.message}`}
@@ -121,11 +172,15 @@ const IncomingOrders: React.FC = () => {
                 <th>{language === "en" ? "Status" : "Statut"}</th>
                 <th>{language === "en" ? "Date" : "Date"}</th>
                 <th>{language === "en" ? "Time Expected" : "Heure Prévue"}</th>
+                <th>{language === "en" ? "Action" : "Action"}</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr key={order.order_id}>
+                <tr
+                  key={order.order_id}
+                  className={getStatusClass(order.status)}
+                >
                   <td>{order.order_id}</td>
                   <td>{order.customer_name}</td>
                   <td>{order.email}</td>
@@ -137,9 +192,26 @@ const IncomingOrders: React.FC = () => {
                     ))}
                   </td>
                   <td>${order.total_price}</td>
-                  <td>{translateStatus(order.status)}</td>
+                  <td className={`status ${getStatusClass(order.status)}`}>
+                    {translateStatus(order.status)}
+                  </td>
                   <td>{formatDate(order.date)}</td>
                   <td>{formatTime(order.time_expected)}</td>
+                  <td>
+                    {order.status !== "completed" && (
+                      <button
+                        className="status-button"
+                        onClick={() =>
+                          updateOrderStatus(
+                            order.order_id,
+                            getNextStatus(order.status)
+                          )
+                        }
+                      >
+                        {getButtonText(order.status)}
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
