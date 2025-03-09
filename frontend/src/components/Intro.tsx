@@ -4,7 +4,7 @@ const Intro: React.FC = () => {
   return (
     <div className="intro-container">
       <div className="logo-box">
-        <img src="/main-body-logo.png" alt="Logo" className="logo" />
+        <img src="../public/logo.png" alt="Logo" className="logo" />
       </div>
     </div>
   );

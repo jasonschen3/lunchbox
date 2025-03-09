@@ -6,9 +6,16 @@ interface CardProps {
   altText: string;
   buttonText: string;
   imageOnLeft: boolean;
+  onClick?: () => void;
 }
 
-function Card({ imageSrc, altText, buttonText, imageOnLeft }: CardProps) {
+function Card({
+  imageSrc,
+  altText,
+  buttonText,
+  imageOnLeft,
+  onClick,
+}: CardProps) {
   const { language } = useLanguage();
 
   const translatedButtonText =
@@ -22,6 +29,8 @@ function Card({ imageSrc, altText, buttonText, imageOnLeft }: CardProps) {
         return "Salades";
       case "View Menu":
         return "Voir le menu";
+      case "Login":
+        return "Connexion";
       default:
         return text;
     }
@@ -32,11 +41,15 @@ function Card({ imageSrc, altText, buttonText, imageOnLeft }: CardProps) {
       {imageOnLeft ? (
         <>
           <img src={imageSrc} alt={altText} className="card-image" />
-          <button className="card-button">{translatedButtonText}</button>
+          <button className="card-button" onClick={onClick}>
+            {translatedButtonText}
+          </button>
         </>
       ) : (
         <>
-          <button className="card-button">{translatedButtonText}</button>
+          <button className="card-button" onClick={onClick}>
+            {translatedButtonText}
+          </button>
           <img src={imageSrc} alt={altText} className="card-image" />
         </>
       )}

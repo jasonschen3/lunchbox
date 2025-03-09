@@ -10,36 +10,35 @@ function Footer() {
         <h2>{language === "en" ? "HOURS" : "HEURES"}</h2>
         <p>
           {language === "en"
-            ? "Monday-Friday | 6:30 AM - 3:00 PM"
-            : "Lundi-Vendredi | 6h30 - 15h00"}
+            ? "Monday-Friday | 7:30 AM - 2:00 PM"
+            : "Lundi-Vendredi | 7h30 - 14h00"}
         </p>
         <p>
           {language === "en"
-            ? "Saturday-Sunday | 7:00 AM - 3:00 PM"
-            : "Samedi-Dimanche | 7h00 - 15h00"}
+            ? "Saturday-Sunday | Closed"
+            : "Samedi-Dimanche | Fermé"}
         </p>
       </div>
 
       <div className="footer-section locations">
-        <h2>{language === "en" ? "LOCATIONS" : "EMPLACEMENTS"}</h2>
+        <h2>{language === "en" ? "LOCATION" : "EMPLACEMENT"}</h2>
         <div className="location">
           <h3>
-            <em>Aurora</em>
+            <em>Metz</em>
           </h3>
           <p>
-            15290 E Iliff Ave.
+            207 Avenue de Strasbourg
             <br />
-            Aurora, CO 80014
+            57070 Metz, France
           </p>
-          <p className="phone">(303) 369-3111</p>
+          <p className="phone">+33 3 87 65 69 29</p>
         </div>
-        {/* Add other locations similarly */}
       </div>
 
       <div className="footer-section social-media">
         <h2>{language === "en" ? "Social Media" : "Réseaux Sociaux"}</h2>
         <a
-          href="https://www.facebook.com/help/668969529866328/"
+          href="https://m.facebook.com/Aux-petits-choux-sandwicherie-546491926267488/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label={

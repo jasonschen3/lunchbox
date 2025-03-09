@@ -34,7 +34,7 @@ const CheckoutButton: React.FC<{
         {
           items,
           success_url: `${window.location.origin}success`,
-          cancel_url: `${window.location.origin}/cancel`,
+          cancel_url: `${window.location.origin}cancel`,
           metadata,
         }
       );
