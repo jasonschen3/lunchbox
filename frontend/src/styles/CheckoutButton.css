@@ -12,3 +12,10 @@
 .checkout-button:hover {
   background-color: #a00;
 }
+
+.email-note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 10px;
+  text-align: center;
+}

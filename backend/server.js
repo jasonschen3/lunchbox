@@ -4,6 +4,8 @@ import pg from "pg";
 import env from "dotenv";
 import cors from "cors";
 
+import { sendOrderConfirmationEmail } from "./utils.js";
+
 // Payment (import uppercase Stripe, lowercase is defined later)
 import Stripe from "stripe";
 
@@ -14,10 +16,6 @@ import orderRouter from "./routes/orders.js";
 
 env.config();
 const app = express();
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 app.use(cors());
 
@@ -54,6 +52,26 @@ app.post(
           [customerName, email, items, totalPrice, date, selectedTime]
         );
         console.log("Order submitted:", result.rows[0]);
+        const orderNumber = result.rows[0].order_id;
+
+        // Send confirmation email with parsed items
+        try {
+          const parsedItems = JSON.parse(items);
+
+          await sendOrderConfirmationEmail({
+            customerName,
+            email,
+            items: parsedItems,
+            totalPrice,
+            date,
+            selectedTime,
+            orderNumber,
+          });
+
+          console.log("Confirmation email sent for order #", orderNumber);
+        } catch (emailErr) {
+          console.error("Error sending confirmation email:", emailErr);
+        }
       } catch (err) {
         console.error("Error submitting order:", err);
       }
@@ -62,6 +80,7 @@ app.post(
     res.status(200).json({ received: true });
   }
 );
+
 app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -89,8 +108,6 @@ app.post("/create-checkout-session", async (req, res) => {
   const { customerName, email, totalPrice, date, selectedTime } =
     req.body.metadata;
 
-  // console.log(req.body);
-
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -115,11 +132,42 @@ app.post("/create-checkout-session", async (req, res) => {
       },
     });
 
+    // Return the session ID
     res.status(200).json({ id: session.id });
   } catch (error) {
     console.log("Error creating checkout session", error);
     res.status(500).send("Internal server error");
   }
+});
+
+// Test endpoint for email functionality
+app.post("/test-email", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const testOrderData = {
+      customerName: "Test Customer",
+      email: email || "test@example.com",
+      items: [
+        { name: "Test Sandwich", quantity: 2, amount: 850 },
+        { name: "Test Salad", quantity: 1, amount: 650 },
+      ],
+      totalPrice: "23.50",
+      date: "2025-03-10",
+      selectedTime: "12:30",
+      orderNumber: "TEST-" + Math.floor(1000 + Math.random() * 9000),
+    };
+
+    await sendOrderConfirmationEmail(testOrderData);
+    res.status(200).json({ success: true, message: "Test email sent" });
+  } catch (error) {
+    console.error("Error sending test email:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 app.listen(port, () => {

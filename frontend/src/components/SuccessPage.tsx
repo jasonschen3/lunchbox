@@ -14,6 +14,7 @@ const SuccessPage: React.FC = () => {
       <h1>Payment Successful!</h1>
       <p>
         Thank you for your order. Your payment has been processed successfully.
+        {/* Confirmed order to {email}. */}
       </p>
       <button className="home-button" onClick={handleGoHome}>
         Go to Home
