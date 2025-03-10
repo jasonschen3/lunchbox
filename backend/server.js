@@ -120,7 +120,11 @@ app.post("/create-checkout-session", async (req, res) => {
         quantity: item.quantity,
       })),
       mode: "payment",
-      success_url: `${process.env.FRONTEND_IP}success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${
+        process.env.FRONTEND_IP
+      }success?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(
+        email
+      )}`,
       cancel_url: `${process.env.FRONTEND_IP}cancel`,
       metadata: {
         customerName,
