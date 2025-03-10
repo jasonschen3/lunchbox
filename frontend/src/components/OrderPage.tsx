@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { BACKEND_IP, OPENING_TIME, CLOSING_TIME } from "../constants";
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 import CheckoutButton from "./CheckoutButton";
 import "../styles/OrderPage.css";
 
-import Header from "./Header.tsx";
+import Header from "./Header";
 
 interface MenuItem {
   item_id: number;

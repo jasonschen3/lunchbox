@@ -1,5 +1,5 @@
 import "../styles/Footer.css";
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 
 function Footer() {
   const { language } = useLanguage();
@@ -49,7 +49,7 @@ function Footer() {
         >
           <img src="/src/assets/meta.svg" alt="meta"></img>
         </a>
-        <a
+        {/* <a
           href="https://www.instagram.com/your-handle"
           target="_blank"
           rel="noopener noreferrer"
@@ -72,7 +72,7 @@ function Footer() {
           }
         >
           <i className="fab fa-yelp"></i>
-        </a>
+        </a> */}
       </div>
     </footer>
   );

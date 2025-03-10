@@ -3,8 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_IP } from "../constants";
 import "../styles/Login.css"; // Reuse the styles from Login.css
-import { useLanguage } from "../Language.tsx";
-import Header from "./Header.tsx";
+import { useLanguage } from "../Language";
+import Header from "./Header";
 
 function Register() {
   const { language } = useLanguage();

@@ -33,8 +33,8 @@ const CheckoutButton: React.FC<{
         `${BACKEND_IP}/create-checkout-session`,
         {
           items,
-          success_url: `${window.location.origin}success`,
-          cancel_url: `${window.location.origin}cancel`,
+          success_url: `${window.location.origin}/success`,
+          cancel_url: `${window.location.origin}/cancel`,
           metadata,
         }
       );

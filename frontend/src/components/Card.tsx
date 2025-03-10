@@ -1,5 +1,5 @@
 import "../styles/Card.css";
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 
 interface CardProps {
   imageSrc: string;

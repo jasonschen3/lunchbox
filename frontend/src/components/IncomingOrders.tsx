@@ -1,9 +1,9 @@
 import axios from "axios";
 import { BACKEND_IP } from "../constants";
 import "../styles/IncomingOrders.css";
-import Header from "./Header.tsx";
+import Header from "./Header";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 
 import useSWR, { mutate } from "swr";
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 import "../styles/OwnerDashboard.css";
 
 const OwnerDashboard = () => {

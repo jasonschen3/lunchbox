@@ -1,6 +1,5 @@
-import React from "react";
 import "../styles/Header.css";
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {

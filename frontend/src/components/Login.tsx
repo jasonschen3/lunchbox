@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/Login.css";
-import Header from "./Header.tsx";
+import Header from "./Header";
 
-import { useLanguage } from "../Language.tsx";
+import { useLanguage } from "../Language";
 import { BACKEND_IP } from "../constants.ts";
 
 const Login: React.FC = () => {

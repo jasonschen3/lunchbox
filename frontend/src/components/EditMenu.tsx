@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BACKEND_IP } from "../constants";
-import Header from "./Header.tsx";
-import { useLanguage } from "../Language.tsx";
+import Header from "./Header";
+import { useLanguage } from "../Language";
 import "../styles/EditMenu.css";
 
 interface MenuItem {
