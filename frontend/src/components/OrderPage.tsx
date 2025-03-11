@@ -25,7 +25,7 @@ const OrderPage: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [message, setMessage] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [timeOptions, setTimeOptions] = useState([]);
+  const [timeOptions, setTimeOptions] = useState<string[]>([]);
 
   useEffect(() => {
     fetchMenu();
@@ -122,13 +122,12 @@ const OrderPage: React.FC = () => {
   }, []);
 
   const getCurrentDateInMetz = () => {
-    const options = {
+    const formatter = new Intl.DateTimeFormat("en-GB", {
       timeZone: "Europe/Paris",
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
-    };
-    const formatter = new Intl.DateTimeFormat("en-GB", options);
+    });
     return formatter.format(new Date());
   };
 
