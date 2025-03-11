@@ -1,4 +1,7 @@
-export const BACKEND_IP = "http://localhost:3000";
+export const BACKEND_IP =
+  import.meta.env.VITE_BACKEND_IP || "http://localhost:3000";
+
+// meta.env.VITE_BACKEND_IP is the build IP
 
 // Restaurant Specific
 export const OPENING_TIME = "09:00"; // 9:00 AM

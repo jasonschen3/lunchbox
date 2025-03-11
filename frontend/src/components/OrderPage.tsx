@@ -28,7 +28,7 @@ const OrderPage: React.FC = () => {
 
   useEffect(() => {
     fetchMenu();
-  });
+  }, []);
 
   const fetchMenu = async () => {
     try {
