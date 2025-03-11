@@ -25,6 +25,7 @@ const OrderPage: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [message, setMessage] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [timeOptions, setTimeOptions] = useState([]);
 
   useEffect(() => {
     fetchMenu();
@@ -64,6 +65,62 @@ const OrderPage: React.FC = () => {
     calculateTotalPrice();
   }, [quantities, menuItems]);
 
+  useEffect(() => {
+    const generateTimeOptions = () => {
+      const times = [];
+
+      // Get current time (local system's time, but this app is only used in FR)
+      const currentDate = new Date();
+
+      // Ahead 1 hour
+      // const testTime = new Date(currentDate.getTime() + 1 * 60 * 60 * 1000);
+
+      // Add 15 minutes to current time (minimum preparation time)
+      const minimumOrderTime = new Date(currentDate.getTime() + 15 * 60 * 1000);
+
+      const openingTime = new Date();
+      const [openingHour, openingMinute] = OPENING_TIME.split(":").map(Number);
+      openingTime.setHours(openingHour, openingMinute, 0, 0);
+
+      const closingTime = new Date();
+      const [closingHour, closingMinute] = CLOSING_TIME.split(":").map(Number);
+      closingTime.setHours(closingHour, closingMinute, 0, 0);
+
+      // Start time will be when the order can be started
+      const startTime = new Date(
+        Math.max(openingTime.getTime(), minimumOrderTime.getTime())
+      );
+
+      // Round starttime up to next 15-min interval
+      const minutes = startTime.getMinutes();
+      const remainder = minutes % 15;
+
+      if (remainder > 0) {
+        startTime.setMinutes(minutes + (15 - remainder));
+      }
+
+      // Generate timeslots with starttime instead of pure opening time
+      while (startTime <= closingTime) {
+        const timeString = startTime.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        times.push(timeString);
+        startTime.setMinutes(startTime.getMinutes() + 15);
+      }
+
+      setTimeOptions(times);
+    };
+
+    generateTimeOptions();
+
+    // Set up a timer to refresh time options every minute
+    const intervalId = setInterval(generateTimeOptions, 60000); // 60000 ms = 1 minute
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   const getCurrentDateInMetz = () => {
     const options = {
       timeZone: "Europe/Paris",
@@ -73,28 +130,6 @@ const OrderPage: React.FC = () => {
     };
     const formatter = new Intl.DateTimeFormat("en-GB", options);
     return formatter.format(new Date());
-  };
-
-  const generateTimeOptions = () => {
-    const times = [];
-    const openingTime = new Date();
-    const [openingHour, openingMinute] = OPENING_TIME.split(":").map(Number);
-    openingTime.setHours(openingHour, openingMinute, 0, 0);
-
-    const closingTime = new Date();
-    const [closingHour, closingMinute] = CLOSING_TIME.split(":").map(Number);
-    closingTime.setHours(closingHour, closingMinute, 0, 0);
-
-    while (openingTime <= closingTime) {
-      const timeString = openingTime.toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      times.push(timeString);
-      openingTime.setMinutes(openingTime.getMinutes() + 15);
-    }
-
-    return times;
   };
 
   const date = getCurrentDateInMetz();
@@ -156,10 +191,15 @@ const OrderPage: React.FC = () => {
               onChange={(e) => setSelectedTime(e.target.value)}
               required
             >
-              <option value="">
+              <option value="" disabled selected>
                 {language === "en" ? "Select a time" : "Sélectionnez une heure"}
               </option>
-              {generateTimeOptions().map((time) => (
+              {timeOptions.length == 0 && (
+                <option value="" disabled>
+                  {language == "en" ? "Come back tomorrow!" : "Reviens demain!"}
+                </option>
+              )}
+              {timeOptions.map((time) => (
                 <option key={time} value={time}>
                   {time}
                 </option>
