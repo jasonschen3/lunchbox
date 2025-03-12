@@ -26,10 +26,29 @@ const OrderPage: React.FC = () => {
   const [message, setMessage] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [timeOptions, setTimeOptions] = useState<string[]>([]);
+  const [valid, setValid] = useState(false);
 
   useEffect(() => {
     fetchMenu();
   }, []);
+
+  // Add validation effect to check all required fields
+  useEffect(() => {
+    // Check if customer name is filled
+    const isNameValid = customerName.trim().length > 0;
+
+    // Check if email is valid using a simple regex pattern
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    // Check if time is selected
+    const isTimeSelected = selectedTime.length > 0;
+
+    // Check if at least one item is selected
+    const hasItems = totalPrice > 0;
+
+    // Set valid state based on all conditions
+    setValid(isNameValid && isEmailValid && isTimeSelected && hasItems);
+  }, [customerName, email, selectedTime, totalPrice]);
 
   const fetchMenu = async () => {
     try {
@@ -71,9 +90,6 @@ const OrderPage: React.FC = () => {
 
       // Get current time (local system's time, but this app is only used in FR)
       const currentDate = new Date();
-
-      // Ahead 1 hour
-      // const testTime = new Date(currentDate.getTime() + 1 * 60 * 60 * 1000);
 
       // Add 15 minutes to current time (minimum preparation time)
       const minimumOrderTime = new Date(currentDate.getTime() + 15 * 60 * 1000);
@@ -135,12 +151,12 @@ const OrderPage: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Selecting time", selectedTime);
-    if (totalPrice <= 0) {
+
+    if (!valid) {
       setMessage(
         language === "en"
-          ? "Total price must be greater than 0."
-          : "Le prix total doit être supérieur à 0."
+          ? "Please fill in all required fields and select at least one item."
+          : "Veuillez remplir tous les champs requis et sélectionner au moins un article."
       );
       return;
     }
@@ -190,12 +206,14 @@ const OrderPage: React.FC = () => {
               onChange={(e) => setSelectedTime(e.target.value)}
               required
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 {language === "en" ? "Select a time" : "Sélectionnez une heure"}
               </option>
-              {timeOptions.length == 0 && (
+              {timeOptions.length === 0 && (
                 <option value="" disabled>
-                  {language == "en" ? "Come back tomorrow!" : "Reviens demain!"}
+                  {language === "en"
+                    ? "Come back tomorrow!"
+                    : "Reviens demain!"}
                 </option>
               )}
               {timeOptions.map((time) => (
@@ -223,7 +241,7 @@ const OrderPage: React.FC = () => {
                       ? item.description
                       : item.french_description}
                   </td>
-                  <td>${item.price}</td>
+                  <td>€{item.price}</td>
                   <td>
                     <select
                       value={quantities[item.item_id] || 0}
@@ -257,6 +275,7 @@ const OrderPage: React.FC = () => {
             />
           </div>
           <CheckoutButton
+            valid={valid}
             items={menuItems
               .filter((item) => quantities[item.item_id] > 0)
               .map((item) => ({
@@ -273,6 +292,13 @@ const OrderPage: React.FC = () => {
             }}
             text={language === "en" ? "Checkout" : "Vérifier"}
           />
+          {!valid && (
+            <p className="validation-message">
+              {language === "en"
+                ? "Please complete all required fields and select at least one item"
+                : "Veuillez remplir tous les champs requis et sélectionner au moins un article"}
+            </p>
+          )}
         </form>
         {message && <p className="message">{message}</p>}
       </div>

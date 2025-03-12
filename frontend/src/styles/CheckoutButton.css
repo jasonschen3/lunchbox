@@ -19,3 +19,12 @@
   margin-top: 10px;
   text-align: center;
 }
+
+.checkout-button-disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.checkout-button-disabled:hover {
+  background-color: #cccccc;
+}

@@ -3,16 +3,16 @@ import axios from "axios";
 import { BACKEND_IP, STRIPE_PUBLISHABLE_KEY } from "../constants";
 import "../styles/CheckoutButton.css";
 
+// Fix the interface to match what OrderPage actually passes
 interface CartItem {
-  id: string;
+  name: string; // Changed from id to name
   quantity: number;
-  price: number;
+  amount: number; // Changed from price to amount (Stripe uses amount in cents)
 }
 
 interface MetaData {
   customerName: string;
   email: string;
-  // items: string; Don't need since we're alreayd passing in items
   totalPrice: number;
   date: string;
   selectedTime: string;
@@ -21,12 +21,21 @@ interface MetaData {
 const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutButton: React.FC<{
+  valid: boolean;
   items: CartItem[];
   metadata: MetaData;
   text: string;
-}> = ({ items, metadata, text }) => {
+}> = ({ valid, items, metadata, text }) => {
   const handleCheckout = async () => {
+    if (!valid) {
+      return;
+    }
+
     const stripe = await stripePromise;
+    if (!stripe) {
+      console.error("Stripe failed to load");
+      return;
+    }
 
     try {
       const { data } = await axios.post(
@@ -39,7 +48,7 @@ const CheckoutButton: React.FC<{
         }
       );
 
-      const result = await stripe?.redirectToCheckout({
+      const result = await stripe.redirectToCheckout({
         sessionId: data.id,
       });
 
@@ -52,7 +61,11 @@ const CheckoutButton: React.FC<{
   };
 
   return (
-    <button className="checkout-button" onClick={handleCheckout}>
+    <button
+      className={`checkout-button ${!valid ? "checkout-button-disabled" : ""}`}
+      onClick={handleCheckout}
+      disabled={!valid}
+    >
       {text}
     </button>
   );
