@@ -138,13 +138,37 @@ const OrderPage: React.FC = () => {
   }, []);
 
   const getCurrentDateInMetz = () => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
+    // Get current date in Paris timezone
+    const today = new Date();
+    const formatter = new Intl.DateTimeFormat("en-US", {
       timeZone: "Europe/Paris",
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
     });
-    return formatter.format(new Date());
+
+    // Get date parts to create ISO format
+    const parts = formatter.formatToParts(today);
+    let month = "",
+      day = "",
+      year = "";
+
+    for (const part of parts) {
+      switch (part.type) {
+        case "month":
+          month = part.value;
+          break;
+        case "day":
+          day = part.value;
+          break;
+        case "year":
+          year = part.value;
+          break;
+      }
+    }
+
+    // Return in YYYY-MM-DD format for PostgreSQL
+    return `${year}-${month}-${day}`;
   };
 
   const date = getCurrentDateInMetz();
