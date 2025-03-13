@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import axios from "axios";
 import { BACKEND_IP } from "../constants";
 import "../styles/IncomingOrders.css";
@@ -22,7 +23,16 @@ interface OrderType {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const IncomingOrders: React.FC = () => {
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
   const { language } = useLanguage();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/unauthorized");
+      return;
+    }
+  }, [token]);
 
   // Use SWR to fetch today's orders
   const {
@@ -32,8 +42,6 @@ const IncomingOrders: React.FC = () => {
   } = useSWR<OrderType[]>(`${BACKEND_IP}/orders/today`, fetcher, {
     refreshInterval: 30000, // Refresh every 30 seconds
   });
-
-  const navigate = useNavigate();
 
   const goBack = () => {
     navigate(-1);
