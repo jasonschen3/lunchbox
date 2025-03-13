@@ -2,9 +2,13 @@ import express from "express";
 import pg from "pg";
 import dotenv from "dotenv";
 
+import { verifyToken } from "./auth.js";
+import jwt from "jsonwebtoken";
+
 dotenv.config();
 
 const router = express.Router();
+const secretKey = process.env.SESSION_KEY; // Used for auth
 
 const db = new pg.Client({
   user: process.env.PG_USER,
@@ -16,7 +20,7 @@ const db = new pg.Client({
 
 db.connect();
 
-router.get("/today", async (req, res) => {
+router.get("/today", verifyToken, async (req, res) => {
   try {
     const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
@@ -37,7 +41,7 @@ router.get("/today", async (req, res) => {
 });
 
 // Update order status
-router.patch("/:id/status", async (req, res) => {
+router.patch("/:id/status", verifyToken, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 

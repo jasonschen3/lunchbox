@@ -20,7 +20,16 @@ interface OrderType {
 }
 
 // Fetcher function for SWR
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+const fetcher = (url: string) => {
+  const token = localStorage.getItem("token");
+  return axios
+    .get(url, {
+      headers: {
+        "access-token": token,
+      },
+    })
+    .then((res) => res.data);
+};
 
 const IncomingOrders: React.FC = () => {
   const token = localStorage.getItem("token");
@@ -50,9 +59,13 @@ const IncomingOrders: React.FC = () => {
   // Handle status update
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
-      await axios.patch(`${BACKEND_IP}/orders/${orderId}/status`, {
-        status: newStatus,
-      });
+      await axios.patch(
+        `${BACKEND_IP}/orders/${orderId}/status`,
+        {
+          status: newStatus,
+        },
+        { headers: { "access-token": localStorage.getItem("token") } }
+      );
 
       // Refresh the data after updating
       mutate(`${BACKEND_IP}/orders/today`);

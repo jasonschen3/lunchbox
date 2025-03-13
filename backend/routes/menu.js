@@ -1,11 +1,14 @@
 import express from "express";
 import pg from "pg";
 import dotenv from "dotenv";
+
 import jwt from "jsonwebtoken";
+import { verifyToken } from "./auth.js";
 
 dotenv.config();
 
 const router = express.Router();
+const secretKey = process.env.SESSION_KEY; // Used for auth
 
 const db = new pg.Client({
   user: process.env.PG_USER,
@@ -17,29 +20,8 @@ const db = new pg.Client({
 
 db.connect();
 
-// Middleware to verify token
-function verifyToken(req, res, next) {
-  const token = req.headers["access-token"];
-  if (!token) {
-    return res.status(403).send("No token provided");
-  }
-
-  jwt.verify(token, process.env.SESSION_KEY, (err, decoded) => {
-    if (err) {
-      return res.status(500).send("Failed to authenticate token");
-    }
-
-    if (!decoded.is_admin) {
-      return res.status(403).send("Not authorized");
-    }
-
-    req.user = decoded;
-    next();
-  });
-}
-
 // Get all menu items
-router.get("/items", async (req, res) => {
+router.get("/items", verifyToken, async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM items ORDER BY item_id DESC");
     res.json(result.rows);

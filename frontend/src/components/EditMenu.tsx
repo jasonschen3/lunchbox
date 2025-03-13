@@ -17,6 +17,7 @@ interface MenuItem {
 
 const EditMenu: React.FC = () => {
   const { language } = useLanguage();
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,6 @@ const EditMenu: React.FC = () => {
 
   // Check authentication
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) {
       navigate("/unauthorized");
     }
@@ -50,7 +50,9 @@ const EditMenu: React.FC = () => {
   const fetchMenuItems = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${BACKEND_IP}/menu/items`);
+      const response = await axios.get(`${BACKEND_IP}/menu/items`, {
+        headers: { "access-token": token },
+      });
       setMenuItems(response.data);
       setError(null);
     } catch (err) {

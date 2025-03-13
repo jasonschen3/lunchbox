@@ -33,7 +33,7 @@ function generateToken(user) {
   return jwt.sign(payload, secretKey, options);
 }
 
-function verifyToken(req, res, next) {
+export function verifyToken(req, res, next) {
   const token = req.headers["access-token"];
   if (!token) {
     return res.status(403).send("No token provided");
