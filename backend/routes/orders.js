@@ -17,17 +17,16 @@ const db = new pg.Client({
 db.connect();
 
 router.get("/today", async (req, res) => {
-  console.log("BACKEND ATTEMPTING TO GET ORDERS");
   try {
     const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
 
-    // But DB stores it in france format // YYYY-DD-MM
-    // Convert YYYY-MM-DD to YYYY-DD-MM
-    const [year, month, day] = today.split("-");
-    const franceFormatDate = `${year}-${day}-${month}`;
+    // But DB stores it traditional format (not France format)
+    // Convert YYYY-MM-DD to France format years-day-month
+    // const [year, month, day] = today.split("-");
+    // const franceFormatDate = `${year}-${day}-${month}`;
 
     const result = await db.query("SELECT * FROM orders WHERE date = $1", [
-      franceFormatDate,
+      today,
     ]);
 
     res.json(result.rows);
