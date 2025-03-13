@@ -28,7 +28,7 @@ const Menu: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Define categories and their display order
-  const categories = {
+  const categories: { [key: string]: string } = {
     cold_cuts: language === "en" ? "Cold Cuts" : "Charcuterie",
     chicken: language === "en" ? "Chicken" : "Poulet",
     fish: language === "en" ? "Fish" : "Poisson",

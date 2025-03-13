@@ -47,7 +47,7 @@ function Footer() {
               : "Visitez notre page Facebook"
           }
         >
-          <img src="/src/assets/meta.svg" alt="meta"></img>
+          <img src="/meta.svg" alt="meta"></img>
         </a>
         {/* <a
           href="https://www.instagram.com/your-handle"

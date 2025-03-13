@@ -16,21 +16,21 @@ const Home: React.FC = () => {
       <Header />
       <Intro />
       <Card
-        imageSrc="/src/assets/sandwich.jpg"
+        imageSrc="/sandwich.jpg"
         altText="Grilled Sandwich"
         buttonText="Order Online"
         imageOnLeft={true}
         onClick={() => handleNavigation("/order")}
       />
       <Card
-        imageSrc="/src/assets/salad.jpeg"
+        imageSrc="/salad.jpeg"
         altText="Salad"
         buttonText="View Menu"
         imageOnLeft={false}
         onClick={() => handleNavigation("/menu")}
       />
       <Card
-        imageSrc="/src/assets/pastry.jpg"
+        imageSrc="/pastry.jpg"
         altText="Pastry"
         buttonText="Login"
         imageOnLeft={true}
