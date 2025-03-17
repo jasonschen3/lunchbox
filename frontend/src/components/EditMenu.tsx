@@ -52,7 +52,9 @@ const EditMenu: React.FC = () => {
       setLoading(true);
       const response = await axios.get(`${BACKEND_IP}/menu/items`, {
         headers: { "access-token": token },
+        // withCredentials: true, // 🔥 Required if using `credentials: true`
       });
+
       setMenuItems(response.data);
       setError(null);
     } catch (err) {

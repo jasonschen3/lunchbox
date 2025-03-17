@@ -14,9 +14,9 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Attempting login", username);
+
     axios
       .post(`${BACKEND_IP}/auth/login`, {
         username: username,
@@ -45,6 +45,7 @@ const Login: React.FC = () => {
               ? "An error occurred. Please try again later."
               : "Une erreur s'est produite. Veuillez réessayer plus tard."
           );
+          console.log(err);
         }
       });
   };

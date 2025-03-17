@@ -305,7 +305,7 @@ const OrderPage: React.FC = () => {
               .map((item) => ({
                 name: item.name,
                 quantity: quantities[item.item_id],
-                amount: item.price * 100, // Price in stripe is in cents
+                amount: Math.round(item.price * 100), // Price in stripe is in cents
               }))}
             metadata={{
               customerName,

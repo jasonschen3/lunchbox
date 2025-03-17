@@ -17,8 +17,6 @@ import orderRouter from "./routes/orders.js";
 env.config();
 const app = express();
 
-app.use(cors());
-
 // Webhook to listen for Stripe checkout Events (move before the express.json)
 app.post(
   "/webhook",
@@ -81,6 +79,7 @@ app.post(
   }
 );
 
+app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
