@@ -27,6 +27,10 @@ const OrderPage: React.FC = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [timeOptions, setTimeOptions] = useState<string[]>([]);
   const [valid, setValid] = useState(false);
+  const [totalQuantity, setTotalQuantity] = useState(0);
+
+  // Maximum items allowed per order
+  const MAX_ITEMS = 5;
 
   useEffect(() => {
     fetchMenu();
@@ -65,10 +69,32 @@ const OrderPage: React.FC = () => {
   };
 
   const handleQuantityChange = (itemId: number, quantity: number) => {
+    const currentQuantity = quantities[itemId] || 0;
+    const quantityDifference = quantity - currentQuantity;
+    const newTotalQuantity = totalQuantity + quantityDifference;
+
+    // Check if the new total would exceed the maximum
+    if (newTotalQuantity > MAX_ITEMS) {
+      setMessage(
+        language === "en"
+          ? `You can only order a maximum of ${MAX_ITEMS} items in total.`
+          : `Vous ne pouvez commander qu'un maximum de ${MAX_ITEMS} articles au total.`
+      );
+      return;
+    }
+
+    // Clear any error message when a valid selection is made
+    if (message.includes(MAX_ITEMS.toString())) {
+      setMessage("");
+    }
+
+    // Update quantities and total
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
       [itemId]: quantity,
     }));
+
+    setTotalQuantity(newTotalQuantity);
   };
 
   useEffect(() => {
@@ -197,6 +223,15 @@ const OrderPage: React.FC = () => {
         <h2>
           {language === "en" ? "Place Your Order" : "Passez votre commande"}
         </h2>
+
+        <div className="order-limits-info">
+          <p>
+            {language === "en"
+              ? `Maximum ${MAX_ITEMS} items per order (${totalQuantity}/${MAX_ITEMS} selected)`
+              : `Maximum ${MAX_ITEMS} articles par commande (${totalQuantity}/${MAX_ITEMS} sélectionné)`}
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="customerName">
@@ -275,8 +310,27 @@ const OrderPage: React.FC = () => {
                           parseInt(e.target.value)
                         )
                       }
+                      className={
+                        totalQuantity >= MAX_ITEMS &&
+                        !(quantities[item.item_id] > 0)
+                          ? "quantity-disabled"
+                          : ""
+                      }
+                      disabled={
+                        totalQuantity >= MAX_ITEMS &&
+                        !(quantities[item.item_id] > 0)
+                      }
                     >
-                      {[...Array(6).keys()].map((num) => (
+                      {[
+                        ...Array(
+                          Math.min(
+                            6,
+                            MAX_ITEMS +
+                              1 -
+                              (totalQuantity - (quantities[item.item_id] || 0))
+                          )
+                        ).keys(),
+                      ].map((num) => (
                         <option key={num} value={num}>
                           {num}
                         </option>
